@@ -86,7 +86,7 @@ $(document).ready(function () {
 	var addedpages = 0;
 	uploadE1.onclick = function (e) {
 		if ($("to-upload").style.height === "0px") {
-			$("to-upload").style.height = "180px";
+			$("to-upload").style.height = "200px";
 		} else {
 			$("to-upload").style.height = "0px";
 		}
@@ -100,9 +100,11 @@ $(document).ready(function () {
 		$("file2").click();
 		$("file2").onchange = function (e) {
 			const file = $("file2").files[0];
+			var filePath = $("file2").value;
 			const fileType = file["type"];
 			const reader = new FileReader();
 			const validImageTypes = ["image/gif", "image/jpeg", "image/png"];
+			const validSVG = /(\.svg)$/i;
 			if (validImageTypes.includes(fileType)) {
 				reader.addEventListener("load", () => {
 					fabric.Image.fromURL(reader.result, function (myImg) {
@@ -114,6 +116,13 @@ $(document).ready(function () {
 					});
 				});
 				reader.readAsDataURL(this.files[0]);
+			} else if (validSVG.exec(filePath)) {
+				var url = URL.createObjectURL(file);
+				fabric.loadSVGFromURL(url, function (objects, options) {
+					objects.forEach(function (object) {
+						canvas.add(object).renderAll();
+					});
+				});
 			}
 			$("to-upload").style.height = "0px";
 		};
@@ -413,10 +422,10 @@ $(document).ready(function () {
 		canvas.isDrawingMode = !canvas.isDrawingMode;
 		if (canvas.isDrawingMode) {
 			drawingModeEl.innerHTML = "Exit";
-			drawingOptionsEl.style.display = "";
+			$("drawing-mode-options-inner-div").style.height = "160px";
 		} else {
 			drawingModeEl.innerHTML = "Enter";
-			drawingOptionsEl.style.display = "none";
+			$("drawing-mode-options-inner-div").style.height = "0px";
 		}
 	};
 	saveCanvasE1.onclick = function () {
@@ -551,7 +560,7 @@ function init(canvas) {
 	var f = function (id) {
 		return document.getElementById(id);
 	};
-
+	f("to-upload").style.height = "0px";
 	fabric.Object.prototype.transparentCorners = false;
 	$(document).bind("contextmenu", function (event) {
 		// Avoid the real one

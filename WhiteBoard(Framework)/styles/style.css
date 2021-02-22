@@ -16,9 +16,24 @@ html {
 	-o-background-size: cover;
 	background-size: cover;
 }
-#drawing-mode-options {
+.gallery {
+	position: relative;
+	overflow: hidden;
 }
-
+.gallery .movable {
+	display: flex;
+	height: 0%;
+}
+.gallery .movable > div {
+	height: 160px;
+	flex: 1;
+	min-width: 100%;
+	transition: height 500ms ease;
+	-moz-transition: height 500ms ease;
+	-ms-transition: height 500ms ease;
+	-o-transition: height 500ms ease;
+	-webkit-transition: height 500ms ease;
+}
 .btn {
 	line-height: 50px;
 	height: 50px;

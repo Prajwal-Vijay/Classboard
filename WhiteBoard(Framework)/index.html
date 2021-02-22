@@ -63,6 +63,7 @@
 				style="height: 100%; width: 75%"
 			/>
 		</div>
+
 		<div id="container">
 			<canvas id="c" height="700px" width="1200px"></canvas>
 		</div>
@@ -70,62 +71,68 @@
 			<div class="btn btn-three" id="drawing-mode">
 				<span>EXIT</span>
 			</div>
-			<section id="drawing-mode-options">
-				<br />
-				<label for="drawing-mode-selector">Mode:</label>
-				<select id="drawing-mode-selector">
-					<optgroup label="Basic">
-						<option>Pencil</option>
-						<option>Circle</option>
-						<option>Spray</option>
-						<option>Pattern</option>
-					</optgroup>
-					<optgroup label="Custom">
-						<option>hline</option>
-						<option>vline</option>
-						<option>square</option>
-						<option>diamond</option>
-						<option>texture</option>
-					</optgroup></select
-				><br />
+			<div class="gallery">
+				<div id="drawing-mode-options" class="movable">
+					<div id="drawing-mode-options-inner-div">
+						<label for="drawing-mode-selector">Mode:</label>
+						<select id="drawing-mode-selector">
+							<optgroup label="Basic">
+								<option>Pencil</option>
+								<option>Circle</option>
+								<option>Spray</option>
+								<option>Pattern</option>
+							</optgroup>
+							<optgroup label="Custom">
+								<option>hline</option>
+								<option>vline</option>
+								<option>square</option>
+								<option>diamond</option>
+								<option>texture</option>
+							</optgroup></select
+						><br />
 
-				<label for="drawing-line-width">Line width:</label>
-				<span class="info">30</span
-				><input
-					type="range"
-					value="30"
-					min="0"
-					max="150"
-					id="drawing-line-width"
-				/><br />
+						<label for="drawing-line-width">Line width:</label>
+						<span class="info">30</span
+						><input
+							type="range"
+							value="30"
+							min="0"
+							max="150"
+							id="drawing-line-width"
+						/><br />
 
-				<label for="drawing-color">Line color:</label>
-				<input type="color" value="#005E7A" id="drawing-color" /><br />
+						<label for="drawing-color">Line color:</label>
+						<input type="color" value="#005E7A" id="drawing-color" /><br />
 
-				<label for="drawing-shadow-color">Shadow color:</label>
-				<input type="color" value="#005E7A" id="drawing-shadow-color" /><br />
+						<label for="drawing-shadow-color">Shadow color:</label>
+						<input
+							type="color"
+							value="#005E7A"
+							id="drawing-shadow-color"
+						/><br />
 
-				<label for="drawing-shadow-width">Shadow width:</label>
-				<span class="info">0</span
-				><input
-					type="range"
-					value="0"
-					min="0"
-					max="50"
-					id="drawing-shadow-width"
-				/><br />
+						<label for="drawing-shadow-width">Shadow width:</label>
+						<span class="info">0</span
+						><input
+							type="range"
+							value="0"
+							min="0"
+							max="50"
+							id="drawing-shadow-width"
+						/><br />
 
-				<label for="drawing-shadow-offset">Shadow offset:</label>
-				<span class="info">0</span
-				><input
-					type="range"
-					value="0"
-					min="0"
-					max="50"
-					id="drawing-shadow-offset"
-				/><br />
-			</section>
-
+						<label for="drawing-shadow-offset">Shadow offset:</label>
+						<span class="info">0</span
+						><input
+							type="range"
+							value="0"
+							min="0"
+							max="50"
+							id="drawing-shadow-offset"
+						/><br />
+					</div>
+				</div>
+			</div>
 			<div id="clear-canvas" class="btn btn-three">Clear</div>
 
 			<div id="download-canvas" class="btn btn-three">Download</div>
