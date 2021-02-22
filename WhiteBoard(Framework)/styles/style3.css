@@ -1,0 +1,57 @@
+#to-upload {
+	display: block;
+	background-color: rgba(142, 180, 224, 0.514);
+	height: 0px;
+	width: 50%;
+	margin: 0 auto;
+	top: 0px;
+	transition: height 500ms ease;
+	-moz-transition: height 500ms ease;
+	-ms-transition: height 500ms ease;
+	-o-transition: height 500ms ease;
+	-webkit-transition: height 500ms ease;
+}
+.pdf {
+	background-color: rgba(0, 0, 0, 0.7); /* Blue background */
+	border: none; /* Remove borders */
+
+	margin-bottom: 10px;
+	height: 50%;
+
+	cursor: pointer; /* Mouse pointer on hover */
+}
+.pdf > img {
+	height: 80%;
+	width: 50%;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 10px;
+}
+/* Darker background on mouse-over */
+.pdf:hover {
+	background-color: rgba(0, 0, 0, 1);
+}
+.img {
+	background-color: DodgerBlue; /* Blue background */
+	border: none; /* Remove borders */
+	margin-bottom: 10px;
+	color: white; /* White text */
+	height: 50%;
+
+	font-size: 16px; /* Set a font size */
+	cursor: pointer; /* Mouse pointer on hover */
+}
+
+/* Darker background on mouse-over */
+.img:hover {
+	background-color: RoyalBlue;
+}
+.img > img {
+	height: 80%;
+	width: 50%;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 10px;
+}
