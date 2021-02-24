@@ -70890,9 +70890,8 @@ $(document).ready(function () {
 			} else if (validSVG.exec(filePath)) {
 				var url = URL.createObjectURL(file);
 				fabric.loadSVGFromURL(url, function (objects, options) {
-					objects.forEach(function (object) {
-						canvas.add(object).renderAll();
-					});
+					var obj = fabric.util.groupSVGElements(objects, options);
+					canvas.add(obj).renderAll();
 				});
 			}
 			$("to-upload").style.height = "0px";
