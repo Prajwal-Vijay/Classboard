@@ -441,7 +441,7 @@ $(document).ready(function () {
 	// };
 	downloadPdfE1.onclick = function () {
 		const doc = new PDFDocument({
-			size: [canArray[0].width + 100, canArray[0].height],
+			size: [(canArray[0].width + 100) / 2, canArray[0].height / 2],
 			autoFirstPage: false,
 		});
 		document.getElementById("waiter").style.display = "block";
@@ -452,7 +452,7 @@ $(document).ready(function () {
 					useCSS: "false",
 					assumePt: "false",
 					preserveAspectRatio: "none",
-					size: [canArray[i].width + 50, canArray[i].height + 50],
+					size: [(canArray[i].width + 50) / 2, (canArray[i].height + 50) / 2],
 				});
 				console.log(objArray[i]);
 				if (objArray2[i]) {
@@ -460,7 +460,7 @@ $(document).ready(function () {
 						useCSS: "false",
 						assumePt: "false",
 						preserveAspectRatio: "none",
-						size: [canArray[i].width, canArray[i].height],
+						size: [canArray[i].width / 2, canArray[i].height / 2],
 					});
 				} else if (canArray[i]) {
 					var img = canArray[i].toDataURL("image/jpeg");
@@ -468,8 +468,8 @@ $(document).ready(function () {
 						useCSS: "false",
 						assumePt: "false",
 						preserveAspectRatio: "none",
-						width: canArray[i].width + 50,
-						height: canArray[i].height + 50,
+						height: canArray[i].height / 2,
+						width: canArray[i].width / 2,
 					});
 				}
 			}
@@ -535,7 +535,7 @@ function init(canvas) {
 	};
 	f("to-upload").style.height = "0px";
 	fabric.Object.prototype.transparentCorners = false;
-	$(document).bind("contextmenu", function (event) {
+	$(".upper-canvas").bind("contextmenu", function (event) {
 		// Avoid the real one
 		event.preventDefault();
 		//Get window size:
@@ -647,6 +647,12 @@ function init(canvas) {
 
 					canvas.renderAll();
 				}
+				break;
+			case "fourth":
+				Copy();
+				break;
+			case "fifth":
+				Paste($(".custom-menu").position());
 				break;
 		}
 
@@ -845,7 +851,67 @@ function init(canvas) {
 			});
 		}
 	};
+	document.addEventListener("keydown", function (event) {
+		if (event.ctrlKey && event.key === "c") {
+			Copy();
+			console.log("copied");
+		}
+	});
+	document.addEventListener("keydown", function (event) {
+		if (event.ctrlKey && event.key === "v") {
+			Paste(undefined);
+			console.log("pasted");
+		}
+	});
+	function Copy() {
+		// clone what are you copying since you
+		// may want copy and paste on different moment.
+		// and you do not want the changes happened
+		// later to reflect on the copy.
+		canvas.getActiveObject().clone(function (cloned) {
+			_clipboard = cloned;
+		});
+	}
 
+	function Paste(position) {
+		// clone again, so you can do multiple copies.
+		_clipboard.clone(function (clonedObj) {
+			canvas.discardActiveObject();
+			if (position !== undefined) {
+				clonedObj.set({
+					left: position.left,
+					top: position.top,
+					evented: true,
+				});
+			} else {
+				clonedObj.set({
+					left: clonedObj.left + 10,
+					top: clonedObj.top + 10,
+					evented: true,
+				});
+			}
+			if (clonedObj.type === "activeSelection") {
+				// active selection needs a reference to the canvas.
+				clonedObj.canvas = canvas;
+				clonedObj.forEachObject(function (obj) {
+					canvas.add(obj);
+				});
+				// this should solve the unselectability
+				clonedObj.setCoords();
+			} else {
+				canvas.add(clonedObj);
+			}
+			if (position !== undefined) {
+				_clipboard.top = position.top;
+				_clipboard.left = position.left;
+			} else {
+				_clipboard.top = _clipboard.top + 10;
+				_clipboard.left = _clipboard.left + 10;
+			}
+			canvas.setActiveObject(clonedObj);
+			canvas.requestRenderAll();
+		});
+	}
 	drawingColorEl.onchange = function () {
 		var brush = canvas.freeDrawingBrush;
 		brush.color = this.value;
