@@ -68,7 +68,6 @@ select {
 	display: none;
 	z-index: 1000;
 	position: absolute;
-	overflow: hidden;
 	border: 1px solid #ccc;
 	white-space: nowrap;
 	font-family: sans-serif;
@@ -76,6 +75,7 @@ select {
 	color: #333;
 	border-radius: 5px;
 	padding: 0;
+	width: 150px;
 }
 
 /* Each of the items in the list */
@@ -85,8 +85,30 @@ select {
 	list-style-type: none;
 	transition: all 0.3s ease;
 	user-select: none;
+	display: block;
+	position: relative;
 }
 
 .custom-menu li:hover {
+	background-color: #def;
+}
+.mode-menu {
+	opacity: 0;
+	height: 0;
+	overflow: hidden;
+	transition: opacity 0.5s linear;
+}
+.custom-menu li:hover .mode-menu {
+	opacity: 1;
+	height: auto;
+	position: absolute;
+	top: 0px;
+	width: 200px;
+	right: -200px;
+	background: #fff;
+	padding: 0;
+}
+
+.mode-menu li:hover {
 	background-color: #def;
 }
