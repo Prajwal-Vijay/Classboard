@@ -42,6 +42,7 @@
 		<script src="dist/canvas-toBlob.js"></script>
 		<script src="dist/fabric.min.js"></script>
 		<script src="dist/undo.min.js"></script>
+		<script src="dist/jquery.mousewheel.min.js"></script>
 	</head>
 
 	<body>
@@ -63,100 +64,102 @@
 				style="height: 100%; width: 75%"
 			/>
 		</div>
-
-		<div id="container">
-			<canvas id="c" height="700px" width="1200px"></canvas>
-		</div>
-		<div style="position: fixed; right: 70px; top: 10px">
-			<div class="btn btn-three" id="drawing-mode">
-				<span>EXIT</span>
+		<div class="mainDiv">
+			<div id="container">
+				<canvas id="c" height="700px" width="1200px"></canvas>
 			</div>
-			<div class="gallery">
-				<div id="drawing-mode-options" class="movable">
-					<div id="drawing-mode-options-inner-div">
-						<label for="drawing-mode-selector">Mode:</label>
-						<select id="drawing-mode-selector">
-							<optgroup label="Basic">
-								<option>Pencil</option>
-								<option>Circle</option>
-								<option>Spray</option>
-								<option>Pattern</option>
-							</optgroup>
-							<optgroup label="Custom">
-								<option>hline</option>
-								<option>vline</option>
-								<option>square</option>
-								<option>diamond</option>
-								<option>texture</option>
-							</optgroup></select
-						><br />
+			<div style="top: 20px; width: 90%">
+				<div class="btn btn-three" id="drawing-mode">
+					<span>EXIT</span>
+				</div>
+				<div class="gallery">
+					<div id="drawing-mode-options" class="movable">
+						<div id="drawing-mode-options-inner-div">
+							<label for="drawing-mode-selector">Mode:</label>
+							<select id="drawing-mode-selector">
+								<optgroup label="Basic">
+									<option>Pencil</option>
+									<option>Circle</option>
+									<option>Spray</option>
+									<option>Pattern</option>
+								</optgroup>
+								<optgroup label="Custom">
+									<option>hline</option>
+									<option>vline</option>
+									<option>square</option>
+									<option>diamond</option>
+									<option>texture</option>
+								</optgroup></select
+							><br />
 
-						<label for="drawing-line-width">Line width:</label>
-						<span class="info">30</span
-						><input
-							type="range"
-							value="30"
-							min="0"
-							max="150"
-							id="drawing-line-width"
-						/><br />
+							<label for="drawing-line-width">Line width:</label>
+							<span class="info">30</span
+							><input
+								type="range"
+								value="30"
+								min="0"
+								max="150"
+								id="drawing-line-width"
+								name="drawing-line-width"
+							/><br />
 
-						<label for="drawing-color">Line color:</label>
-						<input type="color" value="#005E7A" id="drawing-color" /><br />
+							<label for="drawing-color">Line color:</label>
+							<input type="color" value="#005E7A" id="drawing-color" /><br />
 
-						<label for="drawing-shadow-color">Shadow color:</label>
-						<input
-							type="color"
-							value="#005E7A"
-							id="drawing-shadow-color"
-						/><br />
+							<label for="drawing-shadow-color">Shadow color:</label>
+							<input
+								type="color"
+								value="#005E7A"
+								id="drawing-shadow-color"
+							/><br />
 
-						<label for="drawing-shadow-width">Shadow width:</label>
-						<span class="info">0</span
-						><input
-							type="range"
-							value="0"
-							min="0"
-							max="50"
-							id="drawing-shadow-width"
-						/><br />
+							<label for="drawing-shadow-width">Shadow width:</label>
+							<span class="info">0</span
+							><input
+								type="range"
+								value="0"
+								min="0"
+								max="50"
+								id="drawing-shadow-width"
+							/><br />
 
-						<label for="drawing-shadow-offset">Shadow offset:</label>
-						<span class="info">0</span
-						><input
-							type="range"
-							value="0"
-							min="0"
-							max="50"
-							id="drawing-shadow-offset"
-						/><br />
+							<label for="drawing-shadow-offset">Shadow offset:</label>
+							<span class="info">0</span
+							><input
+								type="range"
+								value="0"
+								min="0"
+								max="50"
+								id="drawing-shadow-offset"
+							/><br />
+						</div>
 					</div>
 				</div>
-			</div>
-			<div id="clear-canvas" class="btn btn-three">Clear</div>
+				<div id="clear-canvas" class="btn btn-three">Clear</div>
 
-			<div id="download-canvas" class="btn btn-three">Download</div>
-			<div id="pdf-canvas" class="btn btn-three">Download Pdf</div>
+				<div id="download-canvas" class="btn btn-three">Download</div>
+				<div id="pdf-canvas" class="btn btn-three">Download Pdf</div>
 
-			<div id="Upload-canvas" class="btn btn-three">Upload</div>
-			<div id="to-upload">
-				<div id="pdf-upload" class="pdf">
-					<img
-						src="https://cdn.iconscout.com/icon/premium/png-64-thumb/pdf-extension-509633.png"
-					/>
-					<input type="file" id="file1" style="display: none" />
+				<div id="Upload-canvas" class="btn btn-three">Upload</div>
+				<div id="to-upload">
+					<div id="pdf-upload" class="pdf">
+						<img
+							src="https://cdn.iconscout.com/icon/premium/png-64-thumb/pdf-extension-509633.png"
+						/>
+						<input type="file" id="file1" style="display: none" />
+					</div>
+					<div id="img-upload" class="img">
+						<img
+							src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Circle-icons-image.svg/64px-Circle-icons-image.svg.png"
+						/>
+						<input type="file" id="file2" style="display: none" />
+					</div>
 				</div>
-				<div id="img-upload" class="img">
-					<img
-						src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Circle-icons-image.svg/64px-Circle-icons-image.svg.png"
-					/>
-					<input type="file" id="file2" style="display: none" />
-				</div>
-			</div>
-			<div id="next-page"></div>
+				<div id="next-page"></div>
 
-			<div id="save-canvas" class="btn btn-three">Save</div>
-			<div id="open-canvas" class="btn btn-three">Open</div>
+				<div id="save-canvas" class="btn btn-three">Save</div>
+				<div id="open-canvas" class="btn btn-three">Open</div>
+			</div>
 		</div>
 		<ul class="custom-menu">
 			<li data-action="first">Selectable</li>

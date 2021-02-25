@@ -2,6 +2,7 @@ const PDFDocument = require("pdfkit");
 var blobStream = require("blob-stream"),
 	fs = require("fs"),
 	SVGtoPDF = require("svg-to-pdfkit");
+const { parse } = require("path");
 let intro = document.querySelector(".intro");
 let logo = document.querySelector(".logo-header");
 let logoSpan = document.querySelectorAll(".logo");
@@ -80,13 +81,14 @@ $(document).ready(function () {
 	init(canvas);
 	var canArray = [];
 	var objArray = [];
+	var objArray2 = [];
 	var mainCanvas = canvas.getElement();
 	var mainCtx = mainCanvas.getContext("2d");
 	var curCanvas;
 	var addedpages = 0;
 	uploadE1.onclick = function (e) {
 		if ($("to-upload").style.height === "0px") {
-			$("to-upload").style.height = "200px";
+			$("to-upload").style.height = "100px";
 		} else {
 			$("to-upload").style.height = "0px";
 		}
@@ -190,7 +192,8 @@ $(document).ready(function () {
 						} else if (currPage < maxPage) {
 							this.setAttribute("disabled", true);
 							setTimeout(function () {
-								objArray[currPage - 1] = canvas.toSVG();
+								objArray[currPage - 1] = canvas.toDatalessJSON();
+								objArray2[currPage - 1] = canvas.toSVG();
 								console.log("Copied:" + currPage);
 								currPage++;
 								console.log("At:" + currPage);
@@ -211,22 +214,12 @@ $(document).ready(function () {
 										canvas.setBackgroundImage(img);
 									});
 								} else {
-									fabric.loadSVGFromString(
+									canvas.loadFromJSON(
 										objArray[currPage - 1],
-										function (objects, options) {
-											let i = 0;
-											objects.forEach(function (object) {
-												if (i == 0) {
-													object.selectable = false;
-													canvas.setHeight(object.height);
-												}
-												i++;
-												console.log(object);
-												canvas.add(object).renderAll();
-											});
-										}
+										canvas.renderAll.bind(canvas)
 									);
 								}
+
 								canvas.renderAll();
 								next.removeAttribute("disabled");
 							}, 100);
@@ -239,7 +232,8 @@ $(document).ready(function () {
 						if (currPage > 1) {
 							this.setAttribute("disabled", true);
 							setTimeout(function () {
-								objArray[currPage - 1] = canvas.toSVG();
+								objArray[currPage - 1] = canvas.toDatalessJSON();
+								objArray2[currPage - 1] = canvas.toSVG();
 
 								console.log("Copied:" + currPage);
 								currPage--;
@@ -262,20 +256,9 @@ $(document).ready(function () {
 										canvas.setBackgroundImage(img);
 									});
 								} else {
-									fabric.loadSVGFromString(
+									canvas.loadFromJSON(
 										objArray[currPage - 1],
-										function (objects, options) {
-											let i = 0;
-											objects.forEach(function (object) {
-												if (i == 0) {
-													object.selectable = false;
-													canvas.setHeight(object.height);
-												}
-												i++;
-												console.log(object);
-												canvas.add(object).renderAll();
-											});
-										}
+										canvas.renderAll.bind(canvas)
 									);
 								}
 
@@ -296,7 +279,8 @@ $(document).ready(function () {
 							{
 								this.setAttribute("disabled", true);
 								setTimeout(function () {
-									objArray[currPage - 1] = canvas.toSVG();
+									objArray[currPage - 1] = canvas.toDatalessJSON();
+									objArray2[currPage - 1] = canvas.toSVG();
 									console.log("Copied:" + currPage);
 									if (parseInt(input.value) <= maxPage) {
 										currPage = parseInt(input.value);
@@ -323,20 +307,9 @@ $(document).ready(function () {
 											canvas.setBackgroundImage(img);
 										});
 									} else {
-										fabric.loadSVGFromString(
+										canvas.loadFromJSON(
 											objArray[currPage - 1],
-											function (objects, options) {
-												let i = 0;
-												objects.forEach(function (object) {
-													if (i == 0) {
-														object.selectable = false;
-														canvas.setHeight(object.height);
-													}
-													i++;
-													console.log(object);
-													canvas.add(object).renderAll();
-												});
-											}
+											canvas.renderAll.bind(canvas)
 										);
 									}
 
@@ -352,7 +325,8 @@ $(document).ready(function () {
 						next.innerHTML = "NEXT";
 						this.setAttribute("disabled", true);
 						setTimeout(function () {
-							objArray[currPage - 1] = canvas.toSVG();
+							objArray[currPage - 1] = canvas.toDatalessJSON();
+							objArray2[currPage - 1] = canvas.toSVG();
 							maxPage++;
 							currPage = maxPage;
 							mainCanvas.style.background = "transparent";
@@ -480,9 +454,9 @@ $(document).ready(function () {
 					preserveAspectRatio: "none",
 					size: [canArray[i].width + 50, canArray[i].height + 50],
 				});
-
-				if (objArray[i]) {
-					doc.addSVG(objArray[i], 0, 0, {
+				console.log(objArray[i]);
+				if (objArray2[i]) {
+					doc.addSVG(objArray2[i], 0, 0, {
 						useCSS: "false",
 						assumePt: "false",
 						preserveAspectRatio: "none",
@@ -692,15 +666,34 @@ function init(canvas) {
 		textBox.enterEditing();
 		canvas.renderAll();
 	});
-	$(document).keydown(function (event) {
-		var key = event.keyCode ? event.keyCode : event.which;
-		if (key == "18") {
+	document.addEventListener("keydown", function (event) {
+		if (event.altKey && !event.shiftKey) {
 			event.preventDefault();
 			if (canvas.isDrawingMode) {
 				drawingModeEl.click();
 			}
 		}
 	});
+	var scrollCount = 30;
+	document.addEventListener("keydown", function (event) {
+		if (event.shiftKey) {
+			event.preventDefault();
+			window.addEventListener("mousewheel", wheeler);
+		}
+	});
+	var wheeler = function (e) {
+		if (e.wheelDelta > 0 && scrollCount <= 150) {
+			scrollCount++;
+			canvas.freeDrawingBrush.width = scrollCount;
+			drawingLineWidthEl.value = scrollCount;
+			console.log(drawingLineWidthEl.value);
+		} else if (e.wheelDelta < 0 && scrollCount > 1) {
+			scrollCount--;
+			canvas.freeDrawingBrush.width = scrollCount;
+			drawingLineWidthEl.value = scrollCount;
+		}
+		drawingLineWidthEl.previousSibling.innerHTML = drawingLineWidthEl.value;
+	};
 	$(document).keyup(function (event) {
 		var key = event.keyCode ? event.keyCode : event.which;
 		if (key == "18") {

@@ -33,3 +33,18 @@ fabric.loadSVGFromString(
 						}
 					}
 				);
+
+
+				,
+										function (objects, options) {
+											let i = 0;
+											objects.forEach(function (object) {
+												if (i == 0) {
+													object.selectable = false;
+													canvas.setHeight(object.height);
+												}
+												i++;
+												console.log(object);
+												canvas.add(object).renderAll();
+											});
+										}

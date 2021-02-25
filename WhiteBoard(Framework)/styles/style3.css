@@ -1,10 +1,12 @@
 #to-upload {
-	display: block;
-	background-color: rgba(142, 180, 224, 0.514);
+	display: grid;
+	background-color: rgba(142, 180, 224, 0);
 	height: 0px;
-	width: 50%;
+	width: 100%;
 	margin: 0 auto;
 	top: 0px;
+	grid-template-columns: 2fr 2fr;
+	grid-template-rows: 100%;
 	transition: height 500ms ease;
 	-moz-transition: height 500ms ease;
 	-ms-transition: height 500ms ease;
@@ -14,11 +16,10 @@
 .pdf {
 	background-color: rgba(0, 0, 0, 0.7); /* Blue background */
 	border: none; /* Remove borders */
-
-	margin-bottom: 10px;
-	height: 50%;
-
+	height: 100%;
+	margin-right: 10px;
 	cursor: pointer; /* Mouse pointer on hover */
+	transition-duration: 1s;
 }
 .pdf > img {
 	height: 80%;
@@ -31,21 +32,28 @@
 /* Darker background on mouse-over */
 .pdf:hover {
 	background-color: rgba(0, 0, 0, 1);
+	box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.5);
+	transition-duration: 500ms;
+}
+.pdf:active {
+	transform: translate(3px, 3px);
+	box-shadow: 0px 0px rgba(0, 0, 0, 0.5);
+	transition-duration: 100ms;
 }
 .img {
-	background-color: DodgerBlue; /* Blue background */
+	background-color: rgba(30, 62, 156, 0.7); /* Blue background */
 	border: none; /* Remove borders */
-	margin-bottom: 10px;
-	color: white; /* White text */
-	height: 50%;
-
-	font-size: 16px; /* Set a font size */
+	height: 100%;
 	cursor: pointer; /* Mouse pointer on hover */
+	margin-right: 10px;
+	transition-duration: 1s;
 }
 
 /* Darker background on mouse-over */
 .img:hover {
-	background-color: RoyalBlue;
+	background-color: rgb(30, 62, 156);
+	box-shadow: 5px 5px 3px rgba(30, 0, 0, 0.5);
+	transition-duration: 500ms;
 }
 .img > img {
 	height: 80%;
@@ -54,4 +62,9 @@
 	margin-left: auto;
 	margin-right: auto;
 	padding-top: 10px;
+}
+.img:active {
+	transform: translate(3px, 3px);
+	box-shadow: 0px 0px rgba(30, 0, 0, 0.5);
+	transition-duration: 100ms;
 }
