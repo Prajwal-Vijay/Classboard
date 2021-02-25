@@ -36,7 +36,7 @@
 	transition-duration: 500ms;
 }
 .pdf:active {
-	transform: translate(3px, 3px);
+	transform: translate3d(3px, 3px);
 	box-shadow: 0px 0px rgba(0, 0, 0, 0.5);
 	transition-duration: 100ms;
 }

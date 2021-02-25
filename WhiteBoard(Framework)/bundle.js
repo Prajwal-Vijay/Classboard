@@ -71978,25 +71978,34 @@ function init(canvas) {
 			}
 		}
 	});
-	var scrollCount = 30;
-	document.addEventListener("keydown", function (event) {
-		if (event.shiftKey) {
+	document.addEventListener("keyup", function (event) {
+		if ((event.code === "ShiftLeft" || "ShiftRight") && event.altKey) {
 			event.preventDefault();
-			window.addEventListener("mousewheel", function (e) {
-				if (e.wheelDelta > 0 && scrollCount <= 150) {
-					scrollCount++;
-					canvas.freeDrawingBrush.width = scrollCount;
-					drawingLineWidthEl.value = scrollCount;
-					console.log(drawingLineWidthEl.value);
-				} else if (e.wheelDelta < 0 && scrollCount > 1) {
-					scrollCount--;
-					canvas.freeDrawingBrush.width = scrollCount;
-					drawingLineWidthEl.value = scrollCount;
-				}
-				drawingLineWidthEl.previousSibling.innerHTML = drawingLineWidthEl.value;
-			});
+			document.removeEventListener("wheel", wheeler);
 		}
 	});
+	var scrollCount = 30;
+	document.addEventListener("keydown", function (event) {
+		if (event.shiftKey && event.altKey) {
+			event.preventDefault();
+			document.addEventListener("wheel", wheeler);
+		}
+	});
+
+	function wheeler(event) {
+		console.log("Got the event");
+		if (event.deltaY > 0 && scrollCount <= 150) {
+			scrollCount++;
+			canvas.freeDrawingBrush.width = scrollCount;
+			drawingLineWidthEl.value = scrollCount;
+			console.log(drawingLineWidthEl.value);
+		} else if (event.deltaY < 0 && scrollCount > 1) {
+			scrollCount--;
+			canvas.freeDrawingBrush.width = scrollCount;
+			drawingLineWidthEl.value = scrollCount;
+		}
+		drawingLineWidthEl.previousSibling.innerHTML = drawingLineWidthEl.value;
+	}
 
 	$(document).keyup(function (event) {
 		var key = event.keyCode ? event.keyCode : event.which;
