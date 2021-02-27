@@ -38,6 +38,7 @@
 		<link rel="stylesheet" href="styles/style.css" />
 		<link rel="stylesheet" href="styles/style2.css" />
 		<link rel="stylesheet" href="styles/style3.css" />
+		<link rel="stylesheet" href="styles/style_Calc.css" />
 		<script src="dist/FileSaver.min.js"></script>
 		<script src="dist/canvas-toBlob.js"></script>
 		<script src="dist/fabric.min.js"></script>
@@ -64,9 +65,18 @@
 				style="height: 100%; width: 75%"
 			/>
 		</div>
+		<div class="navbar">
+			<a href="#"
+				><img
+					src="https://cdn2.iconfinder.com/data/icons/scenarium-vol-2-1/128/008_school_blackboard_board_education_study_learn-64.png"
+					alt=""
+				/>
+			</a>
+			<h3>ClassBoard</h3>
+		</div>
 		<div class="mainDiv">
 			<div id="container">
-				<canvas id="c" height="700px" width="1200px"></canvas>
+				<canvas id="c" width="1200px" height="700px"></canvas>
 			</div>
 			<div style="top: 20px; width: 90%">
 				<div class="btn btn-three" id="drawing-mode">
@@ -159,6 +169,33 @@
 
 				<div id="save-canvas" class="btn btn-three">Save</div>
 				<div id="open-canvas" class="btn btn-three">Open</div>
+				<div id="open-calculator" class="btn btn-three">Calculator</div>
+				<div>
+					<div class="calculator">
+						<div class="output">
+							<div data-previous class="previous-operand"></div>
+							<div data-current class="current-operand"></div>
+						</div>
+						<button data-clear class="span-2">AC</button>
+						<button data-delete>Del</button>
+						<button data-operation>÷</button>
+						<button data-number>1</button>
+						<button data-number>2</button>
+						<button data-number>3</button>
+						<button data-operation>*</button>
+						<button data-number>4</button>
+						<button data-number>5</button>
+						<button data-number>6</button>
+						<button data-operation>+</button>
+						<button data-number>7</button>
+						<button data-number>8</button>
+						<button data-number>9</button>
+						<button data-operation>-</button>
+						<button data-number>.</button>
+						<button data-number>0</button>
+						<button data-equals class="span-2">=</button>
+					</div>
+				</div>
 			</div>
 		</div>
 		<ul class="custom-menu">
@@ -175,8 +212,8 @@
 				/>
 
 				<ul class="mode-menu">
-					<li mode-action="first">Selectable</li>
-					<li mode-action="second">Group</li>
+					<li data-mode="first">Selectable</li>
+					<li data-mode="second">Group</li>
 				</ul>
 			</li>
 		</ul>

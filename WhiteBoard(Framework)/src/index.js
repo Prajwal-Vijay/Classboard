@@ -35,6 +35,14 @@ $(document).ready(function () {
 		dropdownCssClass: "myOptions",
 		closeOnSelect: true,
 	});
+	$(".calculator").hide();
+	var hidden = true;
+	$("#open-calculator").click(() => {
+		if (hidden) $(".calculator").show();
+		else $(".calculator").hide();
+
+		hidden = !hidden;
+	});
 });
 (function () {
 	window.addEventListener("DOMContentLoaded", () => {
@@ -78,6 +86,7 @@ $(document).ready(function () {
 	var canvas = (this.__canvas = new fabric.Canvas("c", {
 		isDrawingMode: true,
 	}));
+	fabric.Object.prototype.centeredRotation = true;
 	init(canvas);
 	var canArray = [];
 	var objArray = [];
@@ -114,6 +123,7 @@ $(document).ready(function () {
 							left: 0,
 							top: 0,
 						});
+						console.log(img1.getCenterPoint());
 						canvas.add(img1);
 					});
 				});
@@ -122,6 +132,7 @@ $(document).ready(function () {
 				var url = URL.createObjectURL(file);
 				fabric.loadSVGFromURL(url, function (objects, options) {
 					var obj = fabric.util.groupSVGElements(objects, options);
+
 					canvas.add(obj).renderAll();
 				});
 			}
@@ -687,7 +698,7 @@ function init(canvas) {
 		}
 	}
 
-	document.addEventListener("dblclick", function (e) {
+	$(".upper-canvas").on("dblclick", function (e) {
 		e.preventDefault();
 		if (canvas.findTarget(e) && canvas.findTarget(e).type !== "image") {
 			return;
@@ -704,7 +715,7 @@ function init(canvas) {
 		canvas.renderAll();
 	});
 	document.addEventListener("keydown", function (event) {
-		if (event.altKey && !event.shiftKey) {
+		if (event.altKey) {
 			event.preventDefault();
 			if (canvas.isDrawingMode) {
 				drawingModeEl.click();
@@ -740,9 +751,8 @@ function init(canvas) {
 		drawingLineWidthEl.previousSibling.innerHTML = drawingLineWidthEl.value;
 	}
 
-	$(document).keyup(function (event) {
-		var key = event.keyCode ? event.keyCode : event.which;
-		if (key == "18") {
+	document.addEventListener("keyup", function (event) {
+		if (event.key == "Alt") {
 			event.preventDefault();
 			if (!canvas.isDrawingMode) {
 				drawingModeEl.click();

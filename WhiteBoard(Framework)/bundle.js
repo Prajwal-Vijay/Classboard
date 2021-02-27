@@ -71339,6 +71339,14 @@ $(document).ready(function () {
 		dropdownCssClass: "myOptions",
 		closeOnSelect: true,
 	});
+	$(".calculator").hide();
+	var hidden = true;
+	$("#open-calculator").click(() => {
+		if (hidden) $(".calculator").show();
+		else $(".calculator").hide();
+
+		hidden = !hidden;
+	});
 });
 (function () {
 	window.addEventListener("DOMContentLoaded", () => {
@@ -71382,6 +71390,7 @@ $(document).ready(function () {
 	var canvas = (this.__canvas = new fabric.Canvas("c", {
 		isDrawingMode: true,
 	}));
+	fabric.Object.prototype.centeredRotation = true;
 	init(canvas);
 	var canArray = [];
 	var objArray = [];
@@ -71418,6 +71427,7 @@ $(document).ready(function () {
 							left: 0,
 							top: 0,
 						});
+						console.log(img1.getCenterPoint());
 						canvas.add(img1);
 					});
 				});
@@ -71426,6 +71436,7 @@ $(document).ready(function () {
 				var url = URL.createObjectURL(file);
 				fabric.loadSVGFromURL(url, function (objects, options) {
 					var obj = fabric.util.groupSVGElements(objects, options);
+
 					canvas.add(obj).renderAll();
 				});
 			}
@@ -71991,7 +72002,7 @@ function init(canvas) {
 		}
 	}
 
-	document.addEventListener("dblclick", function (e) {
+	$(".upper-canvas").on("dblclick", function (e) {
 		e.preventDefault();
 		if (canvas.findTarget(e) && canvas.findTarget(e).type !== "image") {
 			return;
@@ -72008,7 +72019,7 @@ function init(canvas) {
 		canvas.renderAll();
 	});
 	document.addEventListener("keydown", function (event) {
-		if (event.altKey && !event.shiftKey) {
+		if (event.altKey) {
 			event.preventDefault();
 			if (canvas.isDrawingMode) {
 				drawingModeEl.click();
@@ -72044,9 +72055,8 @@ function init(canvas) {
 		drawingLineWidthEl.previousSibling.innerHTML = drawingLineWidthEl.value;
 	}
 
-	$(document).keyup(function (event) {
-		var key = event.keyCode ? event.keyCode : event.which;
-		if (key == "18") {
+	document.addEventListener("keyup", function (event) {
+		if (event.key == "Alt") {
 			event.preventDefault();
 			if (!canvas.isDrawingMode) {
 				drawingModeEl.click();
@@ -72278,5 +72288,134 @@ function init(canvas) {
 }
 
 },{"blob-stream":88,"fs":1,"path":41,"pdfkit":296,"svg-to-pdfkit":319}],326:[function(require,module,exports){
-arguments[4][1][0].apply(exports,arguments)
-},{"dup":1}]},{},[325,326]);
+class Calculator {
+	constructor(
+		previousOperandTextElement,
+		currentOperandTextElement,
+		hasComputedWithEquals
+	) {
+		this.previousOperandTextElement = previousOperandTextElement;
+		this.currentOperandTextElement = currentOperandTextElement;
+		this.hasComputedWithEquals = hasComputedWithEquals;
+		this.clear();
+	}
+	clear() {
+		this.previousOperand = "";
+		this.currentOperand = "";
+		this.operation = undefined;
+		this.hasComputedWithEquals = false;
+	}
+	delete() {
+		this.currentOperand = this.currentOperand.toString().slice(0, -1);
+	}
+	appendNumber(number) {
+		if (number === "." && this.currentOperand.includes(".")) return;
+		this.currentOperand = this.currentOperand.toString() + number.toString();
+	}
+	chooseOperation(operation) {
+		if (this.currentOperand === "") return;
+		if (this.previousOperand !== "") {
+			this.compute();
+		}
+		this.operation = operation;
+		this.previousOperand = this.currentOperand.toString();
+		this.currentOperand = "";
+	}
+	compute() {
+		let computation;
+		const prev = parseFloat(this.previousOperand);
+		const curr = parseFloat(this.currentOperand);
+		if (isNaN(prev) || isNaN(curr)) return;
+		switch (this.operation.toString()) {
+			case "+":
+				computation = prev + curr;
+				break;
+			case "-":
+				computation = prev - curr;
+				break;
+			case "*":
+				computation = prev * curr;
+				break;
+			case "÷":
+				computation = prev / curr;
+				break;
+			default:
+				return;
+		}
+		this.currentOperand = computation;
+		this.previousOperand = "";
+		this.operation = undefined;
+	}
+	getDisplayNumber(number) {
+		const stringNumber = number.toString();
+		const integerDigits = parseFloat(stringNumber.split(".")[0]);
+		const decimalDigits = stringNumber.split(".")[1];
+		let integerDisplay;
+		if (isNaN(integerDigits)) integerDisplay = "";
+		else {
+			integerDisplay = integerDigits.toLocaleString("en", {
+				maximumFractionDigits: 0,
+			});
+		}
+		if (decimalDigits != null) {
+			return `${integerDisplay}.${decimalDigits}`;
+		} else {
+			return integerDisplay;
+		}
+	}
+	updateDisplay() {
+		this.currentOperandTextElement.innerText = this.getDisplayNumber(
+			this.currentOperand
+		);
+		if (this.operation != null) {
+			this.previousOperandTextElement.innerText = `${this.getDisplayNumber(
+				this.previousOperand
+			)}  ${this.operation}`;
+		} else {
+			this.previousOperandTextElement.innerText = "";
+		}
+	}
+}
+const numberButtons = document.querySelectorAll("[data-number]");
+const operationButtons = document.querySelectorAll("[data-operation]");
+const equalsButton = document.querySelector("[data-equals]");
+const deleteButton = document.querySelector("[data-delete]");
+const clearButton = document.querySelector("[data-clear]");
+const previousOperandTextElement = document.querySelector("[data-previous]");
+const currentOperandTextElement = document.querySelector("[data-current]");
+const calculator = new Calculator(
+	previousOperandTextElement,
+	currentOperandTextElement
+);
+
+numberButtons.forEach(function (numberButton) {
+	numberButton.addEventListener("click", () => {
+		if (calculator.hasComputedWithEquals) {
+			calculator.clear();
+		}
+		calculator.appendNumber(numberButton.innerText);
+		calculator.updateDisplay();
+	});
+});
+operationButtons.forEach(function (operationButton) {
+	operationButton.addEventListener("click", () => {
+		calculator.hasComputedWithEquals = false;
+		calculator.chooseOperation(operationButton.innerText);
+		calculator.updateDisplay();
+	});
+});
+clearButton.addEventListener("click", () => {
+	calculator.clear();
+	calculator.updateDisplay();
+});
+equalsButton.addEventListener("click", () => {
+	calculator.compute();
+	calculator.updateDisplay();
+	calculator.hasComputedWithEquals = true;
+});
+deleteButton.addEventListener("click", () => {
+	calculator.delete();
+	calculator.updateDisplay();
+});
+
+},{}]},{},[325,326]);
