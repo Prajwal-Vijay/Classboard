@@ -1,5 +1,5 @@
 # Classboard Application 
-In the following application we have a pdf editor, note taking and mainly a whiteboard inspired from Jamboard.
+In the following application we have a pdf editor, note taking and mainly a whiteboard inspired from Google Jamboard.
 The packages used are fabricjs, PDFjs and pdfkit.
 
 It was also the final project of my CS50 Introduction to Programming Course.
