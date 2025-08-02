@@ -1,0 +1,32 @@
+var tmpCTX = canArray[currPage - 1].getContext(
+                                "2d"
+                            );
+                            tmpCTX.drawImage(
+                                canvas.getElement(),
+                                0,
+                                0,
+                                canArray[currPage - 1].width,
+                                canArray[currPage - 1].height
+                            );
+                            console.log("Copied:" + currPage);
+                            currPage++;
+                            console.log("To Page:" + currPage);
+                            var bg = canArray[currPage - 1].toDataURL(
+                                "image/png"
+                            );
+                            mainCanvas.style.backgroundImage = "url('')";
+                            fabric.Image.fromURL(bg, function (img) {
+                                canvas.setHeight(canArray[currPage - 1].height);
+                                canvas.setWidth(canArray[currPage - 1].width);
+                                mainCanvas.style.height =
+                                    canArray[currPage - 1].height + "px";
+                                mainCanvas.style.width =
+                                    canArray[currPage - 1].width + "px";
+                                canvas.setBackgroundImage(img);
+                            });
+                            canvas.renderAll();
+                            next.removeAttribute("disabled");
+                        }, 100);
+                    }
+                });
+                next.innerHTML = "START";

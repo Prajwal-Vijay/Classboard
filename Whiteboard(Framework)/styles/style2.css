@@ -1,0 +1,114 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: "Poppins", sans-serif;
+}
+header {
+	position: relative;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 80px;
+}
+
+/* Spalsh Screen */
+
+.intro {
+	position: fixed;
+	z-index: 10;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100vh;
+	background-color: #161616;
+	transition: 1s;
+}
+.logo-header {
+	position: absolute;
+	top: 40%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	color: #ffffff;
+}
+
+.logo {
+	position: relative;
+	display: inline-block;
+	bottom: -20px;
+	opacity: 0;
+}
+.logo-img {
+	position: relative;
+	bottom: 100px;
+	left: 30px;
+	opacity: 0;
+}
+.logo.active,
+.logo-img.active {
+	bottom: 0;
+	opacity: 1;
+	transition: ease-in-out 0.5s;
+}
+.logo.fade,
+.logo-img.fade {
+	bottom: 150px;
+	opacity: 0;
+	transition: ease-in-out 0.5s;
+}
+select {
+	width: 75%;
+}
+.myOptions {
+	font-family: Space Mono;
+	font-size: 20px;
+	background-color: #4f9baf;
+}
+.custom-menu {
+	display: none;
+	z-index: 1000;
+	position: absolute;
+	border: 1px solid #ccc;
+	white-space: nowrap;
+	font-family: sans-serif;
+	background: #fff;
+	color: #333;
+	border-radius: 5px;
+	padding: 0;
+	width: 150px;
+}
+
+/* Each of the items in the list */
+.custom-menu li {
+	padding: 8px 12px;
+	cursor: pointer;
+	list-style-type: none;
+	transition: all 0.3s ease;
+	user-select: none;
+	display: block;
+	position: relative;
+}
+
+.custom-menu li:hover {
+	background-color: #def;
+}
+.mode-menu {
+	opacity: 0;
+	height: 0;
+	overflow: hidden;
+	transition: opacity 0.5s linear;
+}
+.custom-menu li:hover .mode-menu {
+	opacity: 1;
+	height: auto;
+	position: absolute;
+	top: 0px;
+	width: 200px;
+	right: -200px;
+	background: #fff;
+	padding: 0;
+}
+
+.mode-menu li:hover {
+	background-color: #def;
+}

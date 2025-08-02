@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>ClassBoard</title>
+		<link rel="preconnect" href="https://fonts.gstatic.com" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Reggae+One&display=swap"
+			rel="stylesheet"
+		/>
+		<script src="dist/jquery-3.5.1.min.js"></script>
+		<link
+			href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+			rel="stylesheet"
+		/>
+		<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.7.570/pdf.min.js"
+			integrity="sha512-g4FwCPWM/fZB1Eie86ZwKjOP+yBIxSBM/b2gQAiSVqCgkyvZ0XxYPDEcN2qqaKKEvK6a05+IPL1raO96RrhYDQ=="
+			crossorigin="anonymous"
+		></script>
+
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.7.570/pdf.worker.min.js"
+			integrity="sha512-QVzIOQH0mGpLAOwHfVSOGsVjh4UGon7+hQwoqIUHbTMvcyS76Ee3AUDep58mU2TvdkPgzZ4aQqxbZ0v2wsyvpA=="
+			crossorigin="anonymous"
+		></script>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.7.570/pdf_viewer.min.css"
+			integrity="sha512-srhhMuiYWWC5y1i9GDsrZwGM/+rZn0fsyBW/jYzbmSiwGs8I2iAX9ivxctNznU+WndPgbqtbYECLD8KYgEB3fg=="
+			crossorigin="anonymous"
+		/>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap"
+			rel="stylesheet"
+		/>
+
+		<link rel="stylesheet" href="styles/style.css" />
+		<link rel="stylesheet" href="styles/style2.css" />
+		<link rel="stylesheet" href="styles/style3.css" />
+		<link rel="stylesheet" href="styles/style_Calc.css" />
+		<script src="dist/FileSaver.min.js"></script>
+		<script src="dist/canvas-toBlob.js"></script>
+		<script src="dist/fabric.min.js"></script>
+		<script src="dist/undo.min.js"></script>
+		<script src=""></script>
+	</head>
+
+	<body>
+		<div class="intro">
+			<h1 class="logo-header">
+				<img
+					src="https://cdn2.iconfinder.com/data/icons/scenarium-vol-2-1/128/008_school_blackboard_board_education_study_learn-128.png"
+					class="logo-img"
+				/>
+				<br />
+				<span class="logo">Class</span><span class="logo">board.</span>
+			</h1>
+		</div>
+		<div id="waiter">
+			<img
+				src="https://miro.medium.com/max/1600/0*8JXuuVFx3r6Q2f6Y.gif"
+				alt=""
+				srcset=""
+				style="height: 100%; width: 75%"
+			/>
+		</div>
+		<div class="navbar">
+			<a href="#"
+				><img
+					src="https://cdn2.iconfinder.com/data/icons/scenarium-vol-2-1/128/008_school_blackboard_board_education_study_learn-64.png"
+					alt=""
+				/>
+			</a>
+			<h3>ClassBoard</h3>
+		</div>
+		<div class="mainDiv">
+			<div id="container">
+				<canvas id="c" width="1200px" height="700px"></canvas>
+			</div>
+			<div style="top: 20px; width: 90%">
+				<div class="btn btn-three" id="drawing-mode">
+					<span>EXIT</span>
+				</div>
+				<div class="gallery">
+					<div id="drawing-mode-options" class="movable">
+						<div id="drawing-mode-options-inner-div">
+							<label for="drawing-mode-selector">Mode:</label>
+							<select id="drawing-mode-selector">
+								<optgroup label="Basic">
+									<option>Pencil</option>
+									<option>Circle</option>
+									<option>Spray</option>
+									<option>Pattern</option>
+								</optgroup>
+								<optgroup label="Custom">
+									<option>hline</option>
+									<option>vline</option>
+									<option>square</option>
+									<option>diamond</option>
+									<option>texture</option>
+								</optgroup></select
+							><br />
+
+							<label for="drawing-line-width">Line width:</label>
+							<span class="info">30</span
+							><input
+								type="range"
+								value="30"
+								min="0"
+								max="150"
+								id="drawing-line-width"
+								name="drawing-line-width"
+							/><br />
+
+							<label for="drawing-color">Line color:</label>
+							<input type="color" value="#005E7A" id="drawing-color" /><br />
+
+							<label for="drawing-shadow-color">Shadow color:</label>
+							<input
+								type="color"
+								value="#005E7A"
+								id="drawing-shadow-color"
+							/><br />
+
+							<label for="drawing-shadow-width">Shadow width:</label>
+							<span class="info">0</span
+							><input
+								type="range"
+								value="0"
+								min="0"
+								max="50"
+								id="drawing-shadow-width"
+							/><br />
+
+							<label for="drawing-shadow-offset">Shadow offset:</label>
+							<span class="info">0</span
+							><input
+								type="range"
+								value="0"
+								min="0"
+								max="50"
+								id="drawing-shadow-offset"
+							/><br />
+						</div>
+					</div>
+				</div>
+				<div id="clear-canvas" class="btn btn-three">Clear</div>
+
+				<div id="download-canvas" class="btn btn-three">Download</div>
+				<div id="pdf-canvas" class="btn btn-three">Download Pdf</div>
+
+				<div id="Upload-canvas" class="btn btn-three">Upload</div>
+				<div id="to-upload">
+					<div id="pdf-upload" class="pdf">
+						<img
+							src="https://cdn.iconscout.com/icon/premium/png-64-thumb/pdf-extension-509633.png"
+						/>
+						<input type="file" id="file1" style="display: none" />
+					</div>
+					<div id="img-upload" class="img">
+						<img
+							src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Circle-icons-image.svg/64px-Circle-icons-image.svg.png"
+						/>
+						<input type="file" id="file2" style="display: none" />
+					</div>
+				</div>
+				<div id="next-page"></div>
+
+				<div id="save-canvas" class="btn btn-three">Save</div>
+				<div id="open-canvas" class="btn btn-three">Open</div>
+				<div id="open-calculator" class="btn btn-three">Calculator</div>
+				<div>
+					<div class="calculator">
+						<div class="output">
+							<div data-previous class="previous-operand"></div>
+							<div data-current class="current-operand"></div>
+						</div>
+						<button data-clear class="span-2">AC</button>
+						<button data-delete>Del</button>
+						<button data-operation>÷</button>
+						<button data-number>1</button>
+						<button data-number>2</button>
+						<button data-number>3</button>
+						<button data-operation>*</button>
+						<button data-number>4</button>
+						<button data-number>5</button>
+						<button data-number>6</button>
+						<button data-operation>+</button>
+						<button data-number>7</button>
+						<button data-number>8</button>
+						<button data-number>9</button>
+						<button data-operation>-</button>
+						<button data-number>.</button>
+						<button data-number>0</button>
+						<button data-equals class="span-2">=</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<ul class="custom-menu">
+			<li data-action="first">Selectable</li>
+			<li data-action="second">Group</li>
+			<li data-action="third">Un Group</li>
+			<li data-action="fourth">Copy</li>
+			<li data-action="fifth">Paste</li>
+			<li class="mode">
+				Mode
+				<img
+					src="Images/right-arrow-svgrepo-com.svg"
+					style="height: 10px; width: 10px; margin-left: 20px"
+				/>
+
+				<ul class="mode-menu">
+					<li data-mode="first">Selectable</li>
+					<li data-mode="second">Group</li>
+				</ul>
+			</li>
+		</ul>
+	</body>
+	<script src="bundle.js"></script>
+</html>
