@@ -2,7 +2,9 @@
 In the following application we have a pdf editor, note taking and mainly a whiteboard inspired from Jamboard.
 The packages used are fabricjs, PDFjs and pdfkit.
 ## Demo Video
-![Demo](https://github.com/Prajwal-Vijay/Classboard/blob/main/cs50.mp4)
+https://github.com/user-attachments/assets/daf708c2-00fa-4116-b234-909ab2aaa7f2
+
+
 ## Website
 Access the website at [classboard](https://classboard.netlify.app/). 
 It is recommended to open it in Microsoft Edge Browser.
